@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Aksesoris Syakir</title>
+  <!-- Font Awesome & Google Font -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- SheetJS untuk export Excel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f3f8;
+      color: #1a2634;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    /* ===== NAVIGATION ===== */
+    .navbar {
+      background: white;
+      border-radius: 20px;
+      padding: 0.8rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      border: 1px solid #eef2f6;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #0b1e2b;
+      text-decoration: none;
+    }
+
+    .nav-brand i {
+      color: #b8860b;
+      font-size: 1.4rem;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      text-decoration: none;
+      color: #4a5b6b;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-links a:hover {
+      background: #f4f7fc;
+      color: #0b1e2b;
+    }
+
+    .nav-links a.active {
+      background: #b8860b;
+      color: white;
+      box-shadow: 0 4px 12px rgba(184, 134, 11, 0.2);
+    }
+
+    .nav-links a i {
+      font-size: 0.9rem;
+    }
+
+    /* ===== PAGES ===== */
+    .page {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid #eef2f6;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #1a2a3a;
+    }
+
+    .card-title i {
+      color: #b8860b;
+    }
+
+    /* ===== STATS ===== */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      background: white;
+      padding: 1.2rem 2rem;
+      border-radius: 20px;
+      border: 1px solid #eef2f6;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .stats-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .stats-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .stats-item i {
+      font-size: 1.2rem;
+      color: #b8860b;
+      width: 1.8rem;
+    }
+
+    .stats-item span {
+      font-weight: 600;
+      color: #0b1e2b;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      border: none;
+      padding: 0.65rem 1.6rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: 0.15s;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: #b8860b;
+      color: white;
+      box-shadow: 0 4px 10px rgba(184, 134, 11, 0.15);
+    }
+    .btn-primary:hover { background: #a0740a; transform: scale(0.98); }
+
+    .btn-success {
+      background: #0b7a3d;
+      color: white;
+      box-shadow: 0 4px 10px rgba(11, 122, 61, 0.15);
+    }
+    .btn-success:hover { background: #0a6a34; transform: scale(0.98); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid #dce3ec;
+      color: #2c3e50;
+    }
+    .btn-outline:hover { background: #f4f7fc; border-color: #b8860b; }
+
+    .btn-danger {
+      background: #c94a4a;
+      color: white;
+    }
+    .btn-danger:hover { background: #b03b3b; }
+
+    .btn-sm {
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    /* ===== FORM ===== */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      align-items: end;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .form-group label {
+      font-weight: 500;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #4a5b6b;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .form-group label i {
+      color: #b8860b;
+      font-size: 0.8rem;
+    }
+
+    .form-group input, .form-group select {
+      padding: 0.6rem 1rem;
+      border: 1.5px solid #dce3ec;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      background: white;
+      transition: 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #b8860b;
+      box-shadow: 0 0 0 4px rgba(184, 134, 11, 0.08);
+    }
+
+    /* ===== TABLE ===== */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 20px;
+      border: 1px solid #eef2f6;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      min-width: 600px;
+    }
+
+    th {
+      text-align: left;
+      padding: 1rem 1.2rem;
+      font-weight: 600;
+      color: #3f5264;
+      border-bottom: 2px solid #eef2f6;
+      background: #fafcfe;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 0.9rem 1.2rem;
+      border-bottom: 1px solid #eef2f6;
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .badge {
+      padding: 0.2rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .badge-brand {
+      background: #d4e0f0;
+      color: #1f4a7a;
+    }
+
+    .badge-aksesoris {
+      background: #eef2f6;
+      color: #2c3e50;
+    }
+
+    .empty-row td {
+      padding: 3rem 1.2rem;
+      text-align: center;
+      color: #7a8a9a;
+      font-style: italic;
+    }
+
+    /* ===== ACTION TOOLS ===== */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .toolbar-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: white;
+      padding: 0.1rem 0.1rem 0.1rem 1rem;
+      border-radius: 40px;
+      border: 1.5px solid #dce3ec;
+    }
+
+    .search-box input {
+      border: none;
+      padding: 0.5rem 0;
+      font-size: 0.9rem;
+      background: transparent;
+      width: 160px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .search-box input:focus { outline: none; }
+
+    .search-box button {
+      background: #b8860b;
+      border: none;
+      color: white;
+      padding: 0.45rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .search-box button:hover { background: #a0740a; }
+
+    .sort-select {
+      padding: 0.45rem 1rem;
+      border: 1.5px solid #dce3ec;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      background: white;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+    }
+
+    .sort-select:focus { outline: none; border-color: #b8860b; }
+
+    /* ===== EDIT STOK INLINE ===== */
+    .edit-stok-group {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .edit-stok-group input {
+      width: 60px;
+      padding: 0.3rem 0.4rem;
+      border: 1.5px solid #dce3ec;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .edit-stok-group input:focus {
+      outline: none;
+      border-color: #b8860b;
+    }
+
+    .edit-stok-group .btn {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.75rem;
+    }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #0b7a3d;
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 0.8rem;
+      z-index: 999;
+      animation: slideUp 0.3s ease;
+    }
+
+    .toast.show { display: flex; }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      .navbar { padding: 0.8rem 1rem; flex-direction: column; gap: 0.8rem; }
+      .nav-links { justify-content: center; }
+      .nav-links a { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+      .stats { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+      .stats-left { flex-wrap: wrap; gap: 0.5rem; }
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .toolbar-right { flex-wrap: wrap; }
+      .search-box input { width: 120px; }
+      .card { padding: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar">
+    <a href="#" class="nav-brand" onclick="showPage('home')">
+      <i class="fas fa-cubes"></i> Syakir Collection
+    </a>
+    <div class="nav-links">
+      <a href="#" class="active" data-page="home" onclick="showPage('home')">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a href="#" data-page="daftar" onclick="showPage('daftar')">
+        <i class="fas fa-list"></i> Daftar Aksesoris
+      </a>
+      <a href="#" data-page="semua" onclick="showPage('semua')">
+        <i class="fas fa-database"></i> Semua Data
+      </a>
+    </div>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- PAGE 1: HOME -->
+  <!-- ============================================================ -->
+  <div id="page-home" class="page active">
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stats-left">
+        <div class="stats-item"><i class="fas fa-box"></i> Total Item: <span id="homeTotalItem">0</span></div>
+        <div class="stats-item"><i class="fas fa-tag"></i> Total Merek: <span id="homeTotalBrand">0</span></div>
+        <div class="stats-item"><i class="fas fa-ring"></i> Aksesoris Unik: <span id="homeUniqueAksesoris">0</span></div>
+      </div>
+      <button class="btn btn-success" onclick="downloadExcel()">
+        <i class="fas fa-file-excel"></i> Download Excel
+      </button>
+    </div>
+
+    <!-- Form Tambah -->
+    <div class="card">
+      <div class="card-title"><i class="fas fa-plus-circle"></i> Tambah Aksesoris Baru</div>
+      <form id="formTambah" class="form-grid">
+        <div class="form-group">
+          <label><i class="fas fa-tag"></i> Merek Tas</label>
+          <select id="merekItem" required>
+            <option value="Jovanka">Jovanka</option>
+            <option value="Arsha">Arsha</option>
+            <option value="Arliwi">Arliwi</option>
+            <option value="Marlinda">Marlinda</option>
+            <option value="Ananda/Dinara">Ananda/Dinara</option>
+            <option value="Sikamaru">Sikamaru</option>
+            <option value="Revana">Revana</option>
+            <option value="Hinata">Hinata</option>
+            <option value="Leora">Leora</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-th-large"></i> Aksesoris</label>
+          <input type="text" id="aksesorisItem" placeholder="contoh: ring jalan" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-hashtag"></i> Stok</label>
+          <input type="number" id="stokItem" min="1" value="1" required>
+        </div>
+        <div class="form-group" style="justify-content: flex-end;">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Preview 5 data terbaru -->
+    <div class="card">
+      <div class="card-title"><i class="fas fa-clock"></i> Data Terbaru</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Merek</th><th>Aksesoris</th><th>Stok</th></tr>
+          </thead>
+          <tbody id="homePreviewBody">
+            <tr class="empty-row"><td colspan="4">Belum ada data</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PAGE 2: DAFTAR AKSESORIS (Per Merek) -->
+  <!-- ============================================================ -->
+  <div id="page-daftar" class="page">
+    <div class="card">
+      <div class="card-title"><i class="fas fa-list"></i> Daftar Aksesoris per Merek</div>
+      <p style="color: #5f7385; margin-bottom: 1.2rem; font-size: 0.9rem;">
+        Klik nama merek untuk melihat & mengedit stok aksesorisnya.
+      </p>
+      <div id="daftarMerekContainer">
+        <!-- akan di-render oleh JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PAGE 3: SEMUA DATA (Full Table) -->
+  <!-- ============================================================ -->
+  <div id="page-semua" class="page">
+    <div class="card">
+      <div class="card-title"><i class="fas fa-database"></i> Semua Data Aksesoris</div>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button class="btn btn-success btn-sm" onclick="downloadExcel()">
+            <i class="fas fa-file-excel"></i> Excel
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="resetAllData()" style="color:#c94a4a; border-color:#c94a4a;">
+            <i class="fas fa-trash"></i> Reset
+          </button>
+        </div>
+        <div class="toolbar-right">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchAll" placeholder="Cari...">
+            <button onclick="applyFilterAll()"><i class="fas fa-filter"></i></button>
+          </div>
+          <select class="sort-select" id="sortAll" onchange="applySortAll()">
+            <option value="default">Urutkan</option>
+            <option value="merek-asc">Merek A-Z</option>
+            <option value="merek-desc">Merek Z-A</option>
+            <option value="aksesoris-asc">Aksesoris A-Z</option>
+            <option value="stok-asc">Stok (Rendah)</option>
+            <option value="stok-desc">Stok (Tinggi)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tabel -->
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Merek Tas</th>
+              <th>Aksesoris</th>
+              <th>Stok</th>
+              <th style="text-align: right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="allDataBody">
+            <tr class="empty-row"><td colspan="5">Belum ada data</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note" style="text-align:center; color:#5f7385; font-size:0.8rem; padding-top:1.5rem; border-top:1px solid #e2e8f0; margin-top:1rem;">
+    <i class="fas fa-database"></i> Data tersimpan otomatis di browser Anda · Syakir Collection
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast">
+  <i class="fas fa-check-circle"></i>
+  <span id="toastMessage">Berhasil!</span>
+</div>
+
+<script>
+  // ================================================================
+  // DATA & STORAGE
+  // ================================================================
+  const STORAGE_KEY = 'aksesoris_syakir_data';
+  const ID_KEY = 'aksesoris_syakir_nextId';
+
+  const defaultData = [
+    { id: 1, merek: 'Jovanka', aksesoris: 'ring jalan', stok: 12 },
+    { id: 2, merek: 'Jovanka', aksesoris: 'Ring Kotak', stok: 8 },
+    { id: 3, merek: 'Jovanka', aksesoris: 'Kepala', stok: 6 },
+    { id: 4, merek: 'Arsha', aksesoris: 'ring jalan', stok: 15 },
+    { id: 5, merek: 'Arsha', aksesoris: 'ring kotak', stok: 10 },
+    { id: 6, merek: 'Arsha', aksesoris: 'kew kew', stok: 7 },
+    { id: 7, merek: 'Arsha', aksesoris: 'kring O', stok: 5 },
+    { id: 8, merek: 'Arsha', aksesoris: 'ring U', stok: 9 },
+    { id: 9, merek: 'Arsha', aksesoris: 'ring D', stok: 11 },
+    { id: 10, merek: 'Arsha', aksesoris: 'Kangguru', stok: 4 },
+    { id: 11, merek: 'Arliwi', aksesoris: 'Kepala', stok: 8 },
+    { id: 12, merek: 'Arliwi', aksesoris: 'kew kew', stok: 6 },
+    { id: 13, merek: 'Arliwi', aksesoris: 'Ring D', stok: 10 },
+    { id: 14, merek: 'Arliwi', aksesoris: 'Ring Jalan', stok: 7 },
+    { id: 15, merek: 'Marlinda', aksesoris: 'Kunci Badan', stok: 6 },
+    { id: 16, merek: 'Marlinda', aksesoris: 'Kunci Tulale', stok: 5 },
+    { id: 17, merek: 'Marlinda', aksesoris: 'Kepala', stok: 9 },
+    { id: 18, merek: 'Marlinda', aksesoris: 'ring kotak', stok: 7 },
+    { id: 19, merek: 'Marlinda', aksesoris: 'ring jalan', stok: 10 },
+    { id: 20, merek: 'Marlinda', aksesoris: 'kew kew', stok: 4 },
+    { id: 21, merek: 'Marlinda', aksesoris: 'Ring D', stok: 8 },
+    { id: 22, merek: 'Ananda/Dinara', aksesoris: 'kepala', stok: 11 },
+    { id: 23, merek: 'Ananda/Dinara', aksesoris: 'kew kew', stok: 6 },
+    { id: 24, merek: 'Ananda/Dinara', aksesoris: 'ringjalan', stok: 9 },
+    { id: 25, merek: 'Ananda/Dinara', aksesoris: 'kangguru', stok: 3 },
+    { id: 26, merek: 'Ananda/Dinara', aksesoris: 'ring cucuk', stok: 5 },
+    { id: 27, merek: 'Ananda/Dinara', aksesoris: 'ring O', stok: 7 },
+    { id: 28, merek: 'Sikamaru', aksesoris: 'kepala manngo', stok: 6 },
+    { id: 29, merek: 'Sikamaru', aksesoris: 'kepala cebol', stok: 8 },
+    { id: 30, merek: 'Sikamaru', aksesoris: 'ring kotak', stok: 10 },
+    { id: 31, merek: 'Sikamaru', aksesoris: 'ring jalan', stok: 12 },
+    { id: 32, merek: 'Revana', aksesoris: 'kepala', stok: 7 },
+    { id: 33, merek: 'Revana', aksesoris: 'konci badan', stok: 5 },
+    { id: 34, merek: 'Revana', aksesoris: 'Konci tulale', stok: 4 },
+    { id: 35, merek: 'Revana', aksesoris: 'ring D', stok: 9 },
+    { id: 36, merek: 'Revana', aksesoris: 'ring kotak', stok: 6 },
+    { id: 37, merek: 'Revana', aksesoris: 'ring jalan', stok: 11 },
+    { id: 38, merek: 'Revana', aksesoris: 'kew kew', stok: 5 },
+    { id: 39, merek: 'Hinata', aksesoris: 'kepala manggo', stok: 6 },
+    { id: 40, merek: 'Hinata', aksesoris: 'kepala cebol', stok: 7 },
+    { id: 41, merek: 'Hinata', aksesoris: 'ring D', stok: 8 },
+    { id: 42, merek: 'Hinata', aksesoris: 'kew kew', stok: 5 },
+    { id: 43, merek: 'Hinata', aksesoris: 'ring jalan', stok: 10 },
+    { id: 44, merek: 'Leora', aksesoris: 'Kepala', stok: 8 },
+    { id: 45, merek: 'Leora', aksesoris: 'Ring U', stok: 6 },
+    { id: 46, merek: 'Leora', aksesoris: 'ring D', stok: 7 },
+    { id: 47, merek: 'Leora', aksesoris: 'ring jalan', stok: 9 },
+    { id: 48, merek: 'Leora', aksesoris: 'kew kew', stok: 4 }
+  ];
+
+  let inventory = [];
+  let nextId = 1;
+  let filterAllText = '';
+  let sortAllBy = 'default';
+
+  // ================================================================
+  // LOAD / SAVE
+  // ================================================================
+  function loadData() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    const savedId = localStorage.getItem(ID_KEY);
+    if (saved) {
+      try {
+        inventory = JSON.parse(saved);
+        inventory = inventory.filter(item => item.id !== undefined);
+        if (inventory.length === 0) inventory = defaultData.map(item => ({...item}));
+      } catch { inventory = defaultData.map(item => ({...item})); }
+    } else {
+      inventory = defaultData.map(item => ({...item}));
+    }
+    if (savedId) nextId = parseInt(savedId);
+    else {
+      const maxId = inventory.reduce((max, item) => Math.max(max, item.id || 0), 0);
+      nextId = maxId + 1;
+    }
+    inventory = inventory.filter(item => item.id !== undefined && item.id !== null);
+    if (inventory.length === 0) {
+      inventory = defaultData.map(item => ({...item}));
+      const maxId = inventory.reduce((max, item) => Math.max(max, item.id || 0), 0);
+      nextId = maxId + 1;
+    }
+  }
+
+  function saveData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(inventory));
+    localStorage.setItem(ID_KEY, String(nextId));
+  }
+
+  // ================================================================
+  // TOAST
+  // ================================================================
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMessage').textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  // ================================================================
+  // NAVIGATION
+  // ================================================================
+  function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.querySelector(`.nav-links a[data-page="${page}"]`).classList.add('active');
+    if (page === 'home') renderHome();
+    else if (page === 'daftar') renderDaftar();
+    else if (page === 'semua') renderAllData();
+  }
+
+  // ================================================================
+  // RENDER HOME
+  // ================================================================
+  function renderHome() {
+    document.getElementById('homeTotalItem').textContent = inventory.length;
+    const brands = new Set(inventory.map(i => i.merek));
+    document.getElementById('homeTotalBrand').textContent = brands.size;
+    const aksesorisSet = new Set(inventory.map(i => i.aksesoris.toLowerCase()));
+    document.getElementById('homeUniqueAksesoris').textContent = aksesorisSet.size;
+
+    const preview = inventory.slice(-5).reverse();
+    const tbody = document.getElementById('homePreviewBody');
+    if (preview.length === 0) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Belum ada data</td></tr>';
+    } else {
+      tbody.innerHTML = preview.map((item, i) => `
+        <tr>
+          <td>${i+1}</td>
+          <td><span class="badge badge-brand">${escapeHtml(item.merek)}</span></td>
+          <td><span class="badge badge-aksesoris">${escapeHtml(item.aksesoris)}</span></td>
+          <td>${item.stok}</td>
+        </tr>
+      `).join('');
+    }
+  }
+
+  // ================================================================
+  // RENDER DAFTAR (Per Merek)
+  // ================================================================
+  function renderDaftar() {
+    const container = document.getElementById('daftarMerekContainer');
+    const merekList = [...new Set(inventory.map(i => i.merek))].sort();
+
+    if (merekList.length === 0) {
+      container.innerHTML = '<div class="card" style="text-align:center;color:#7a8a9a;">Belum ada data merek</div>';
+      return;
+    }
+
+    let html = '';
+    merekList.forEach(merek => {
+      const items = inventory.filter(i => i.merek === merek);
+      html += `
+        <div style="background:#fafcfe; border-radius:16px; padding:1.2rem 1.5rem; margin-bottom:1rem; border:1px solid #eef2f6;">
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
+            <h3 style="font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+              <i class="fas fa-tag" style="color:#b8860b;"></i> ${escapeHtml(merek)}
+              <span style="font-weight:400; font-size:0.8rem; color:#5f7385;">(${items.length} aksesoris)</span>
+            </h3>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:0.5rem;">
+            ${items.map(item => `
+              <div style="background:white; border-radius:12px; padding:0.6rem 1rem; border:1px solid #eef2f6; display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
+                <span style="font-size:0.85rem;">${escapeHtml(item.aksesoris)}</span>
+                <div class="edit-stok-group">
+                  <input type="number" id="stok_${item.id}" value="${item.stok}" min="0" style="width:50px; padding:0.2rem 0.3rem; border:1.5px solid #dce3ec; border-radius:8px; font-size:0.8rem; text-align:center;">
+                  <button class="btn btn-primary btn-sm" onclick="updateStok(${item.id})" style="padding:0.15rem 0.5rem; font-size:0.7rem;">
+                    <i class="fas fa-save"></i>
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  }
+
+  // ================================================================
+  // UPDATE STOK (dari halaman Daftar)
+  // ================================================================
+  function updateStok(id) {
+    const input = document.getElementById('stok_' + id);
+    if (!input) return;
+    const newStok = parseInt(input.value);
+    if (isNaN(newStok) || newStok < 0) {
+      alert('Stok harus angka positif');
+      return;
+    }
+    const item = inventory.find(i => i.id === id);
+    if (item) {
+      item.stok = newStok;
+      saveData();
+      renderDaftar();
+      showToast(`Stok "${item.aksesoris}" untuk ${item.merek} diperbarui menjadi ${newStok}`);
+    }
+  }
+
+  // ================================================================
+  // RENDER ALL DATA (dengan filter & sort)
+  // ================================================================
+  function renderAllData() {
+    let data = [...inventory];
+
+    // Filter
+    if (filterAllText.trim()) {
+      const q = filterAllText.toLowerCase().trim();
+      data = data.filter(item => 
+        item.merek.toLowerCase().includes(q) || 
+        item.aksesoris.toLowerCase().includes(q)
+      );
+    }
+
+    // Sort
+    if (sortAllBy === 'merek-asc') data.sort((a,b) => a.merek.localeCompare(b.merek));
+    else if (sortAllBy === 'merek-desc') data.sort((a,b) => b.merek.localeCompare(a.merek));
+    else if (sortAllBy === 'aksesoris-asc') data.sort((a,b) => a.aksesoris.localeCompare(b.aksesoris));
+    else if (sortAllBy === 'stok-asc') data.sort((a,b) => a.stok - b.stok);
+    else if (sortAllBy === 'stok-desc') data.sort((a,b) => b.stok - a.stok);
+
+    const tbody = document.getElementById('allDataBody');
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Tidak ada data</td></tr>';
+    } else {
+      tbody.innerHTML = data.map((item, idx) => {
+        const brandKey = item.merek.toLowerCase().replace(/[^a-z]/g, '');
+        return `
+          <tr>
+            <td>${idx+1}</td>
+            <td><span class="badge badge-${brandKey}">${escapeHtml(item.merek)}</span></td>
+            <td><span class="badge badge-aksesoris">${escapeHtml(item.aksesoris)}</span></td>
+            <td>${item.stok}</td>
+            <td style="text-align:right;">
+              <div class="edit-stok-group" style="justify-content:flex-end;">
+                <input type="number" id="stokAll_${item.id}" value="${item.stok}" min="0" style="width:55px;">
+                <button class="btn btn-primary btn-sm" onclick="updateStokAll(${item.id})"><i class="fas fa-save"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteItem(${item.id})"><i class="fas fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  }
+
+  function updateStokAll(id) {
+    const input = document.getElementById('stokAll_' + id);
+    if (!input) return;
+    const newStok = parseInt(input.value);
+    if (isNaN(newStok) || newStok < 0) {
+      alert('Stok harus angka positif');
+      return;
+    }
+    const item = inventory.find(i => i.id === id);
+    if (item) {
+      item.stok = newStok;
+      saveData();
+      renderAllData();
+      showToast(`Stok "${item.aksesoris}" diperbarui menjadi ${newStok}`);
+    }
+  }
+
+  function deleteItem(id) {
+    if (!confirm('Hapus data ini?')) return;
+    inventory = inventory.filter(i => i.id !== id);
+    saveData();
+    renderAllData();
+    showToast('Data dihapus');
+  }
+
+  function applyFilterAll() {
+    filterAllText = document.getElementById('searchAll').value;
+    renderAllData();
+  }
+
+  function applySortAll() {
+    sortAllBy = document.getElementById('sortAll').value;
+    renderAllData();
+  }
+
+  // ================================================================
+  // DOWNLOAD EXCEL
+  // ================================================================
+  function downloadExcel() {
+    if (inventory.length === 0) {
+      alert('Tidak ada data untuk di-download!');
+      return;
+    }
+    const excelData = inventory.map((item, idx) => ({
+      'No': idx+1,
+      'Merek Tas': item.merek,
+      'Aksesoris': item.aksesoris,
+      'Stok': item.stok
+    }));
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    ws['!cols'] = [{wch:5},{wch:20},{wch:25},{wch:10}];
+    XLSX.utils.book_append_sheet(wb, ws, 'Aksesoris');
+    XLSX.writeFile(wb, `Data_Aksesoris_Syakir_${new Date().toLocaleDateString('id-ID')}.xlsx`);
+    showToast('File Excel berhasil di-download!');
+  }
+
+  // ================================================================
+  // RESET ALL DATA
+  // ================================================================
+  function resetAllData() {
+    if (!confirm('Yakin reset semua data ke default?')) return;
+    inventory = defaultData.map(item => ({...item}));
+    const maxId = inventory.reduce((max, item) => Math.max(max, item.id || 0), 0);
+    nextId = maxId + 1;
+    saveData();
+    renderAllData();
+    renderHome();
+    renderDaftar();
+    showToast('Data direset ke default');
+  }
+
+  // ================================================================
+  // HELPERS
+  // ================================================================
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ================================================================
+  // FORM TAMBAH (Home)
+  // ================================================================
+  document.getElementById('formTambah').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const merek = document.getElementById('merekItem').value;
+    const aksesoris = document.getElementById('aksesorisItem').value.trim();
+    const stok = parseInt(document.getElementById('stokItem').value);
+
+    if (!aksesoris || !stok || stok < 1) {
+      alert('Nama aksesoris dan stok harus diisi (stok minimal 1)');
+      return;
+    }
+
+    // Cek duplikat
+    const dup = inventory.find(i => 
+      i.merek.toLowerCase() === merek.toLowerCase() && 
+      i.aksesoris.toLowerCase() === aksesoris.toLowerCase()
+    );
+    if (dup) {
+      if (confirm(`"${merek} - ${aksesoris}" sudah ada. Tambah stok?`)) {
+        dup.stok += stok;
+        saveData();
+        renderHome();
+        renderDaftar();
+        renderAllData();
+        this.reset();
+        document.getElementById('stokItem').value = 1;
+        showToast(`Stok ${aksesoris} untuk ${merek} bertambah!`);
+        return;
+      }
+      return;
+    }
+
+    const newItem = { id: nextId++, merek, aksesoris, stok };
+    inventory.push(newItem);
+    saveData();
+    renderHome();
+    renderDaftar();
+    renderAllData();
+    this.reset();
+    document.getElementById('stokItem').value = 1;
+    showToast('Data berhasil ditambahkan!');
+  });
+
+  // ================================================================
+  // INIT
+  // ================================================================
+  loadData();
+  renderHome();
+  renderDaftar();
+  renderAllData();
+
+  // Event listener untuk search Enter
+  document.getElementById('searchAll').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') applyFilterAll();
+  });
+
+  // ================================================================
+  // EXPOSE GLOBAL
+  // ================================================================
+  window.showPage = showPage;
+  window.updateStok = updateStok;
+  window.updateStokAll = updateStokAll;
+  window.deleteItem = deleteItem;
+  window.downloadExcel = downloadExcel;
+  window.resetAllData = resetAllData;
+  window.applyFilterAll = applyFilterAll;
+  window.applySortAll = applySortAll;
+</script>
+</body>
+</html>
